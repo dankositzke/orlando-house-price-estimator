@@ -35,11 +35,13 @@ column1 = dbc.Col(
                 dcc.Input(id="address", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain city from user input
                 html.P(["City"]),
                 dcc.Input(id="city", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain zip code from user input
                 html.P(["Zip Code"]),
                 dcc.Input(id="zip-code", type="text"),
@@ -61,26 +63,31 @@ column2 = dbc.Col(
                 dcc.Input(id="bedrooms", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain number of bathrooms from user input
                 html.P(["Bathrooms"]),
                 dcc.Input(id="bathrooms", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain square feet from user input
                 html.P(["Square Feet"]),
                 dcc.Input(id="sqft", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain lot size from user input
                 html.P(["Lot Size (in square feet)"]),
                 dcc.Input(id="lot-size", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain year built from user input
                 html.P(["Year Built"]),
                 dcc.Input(id="year-built", type="text"),
                 html.Br(),
                 html.Br(),
+                
                 # Obtain monthly HOA fee (if any) from user input
                 html.P(["Monthly HOA Fee"]),
                 html.P(["(Enter 0 if none)"]),
@@ -138,6 +145,7 @@ no_clicks = 0
 # up extremely fast. Therefore, this function will act as 'gate' to ensure
 # that the API calls only happen once all of the data has been input by
 # the user.
+
 @app.callback(
     Output("prediction-content", "children"),
     [
@@ -197,16 +205,7 @@ def check_user_inputs(
 
     if user_input_lat != 0 and user_input_lng != 0:
         pred_df = pd.DataFrame(
-            # columns=[
-            #     "Beds",
-            #     "Baths",
-            #     "Square Feet",
-            #     "Lot Size",
-            #     "Year Built",
-            #     "HOA/Month",
-            #     "Latitude",
-            #     "Longitude",
-            # ],
+            
             data=[
                 [
                     index,
@@ -222,6 +221,7 @@ def check_user_inputs(
             ],
         )
 
+        # Load in pre-trained RandomForestRegressor model
         pipeline = joblib.load("assets/pipe.joblib")
         y_pred = int(pipeline.predict(pred_df)[0])
 
