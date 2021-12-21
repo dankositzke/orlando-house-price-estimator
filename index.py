@@ -124,10 +124,7 @@ column3 = dbc.Col(
 # Set up items for google maps API call to get latitude and longitude
 import requests
 
-
-base_url = "https://maps.googleapis.com/maps/api/geocode/json?"
-google_api_key = os.getenv("GOOGLE_API_KEY")
-
+mapquest_api_key = os.getenv("MAPQUEST_API_KEY")
 
 @app.callback(Output("address_output", "children"), [Input("address", "value")])
 def check_address(address):
@@ -192,16 +189,18 @@ def check_user_inputs(
     ):
 
         no_clicks = no_clicks + 1
-        user_input_address = str(address) + str(city) + "FL" + str(zip_code)
-        params = {"key": google_api_key, "address": user_input_address}
-        response = requests.get(base_url, params).json()
-        if response["status"] == "OK":
-            user_input_lat = round(
-                (response["results"][0]["geometry"]["location"]["lat"]), 6
-            )
-            user_input_lng = round(
-                (response["results"][0]["geometry"]["location"]["lng"]), 6
-            )
+        user_input_address = str(address) + " " + str(city) + " FL " + str(zip_code)
+        params = {
+            "key": mapquest_api_key,
+            "location": user_input_address,
+        }
+        
+        response = requests.get(
+            "http://www.mapquestapi.com/geocoding/v1/address", params=params
+        ).json()
+        
+        user_input_lat = response["results"][0]["locations"][0]["latLng"]["lat"]
+        user_input_lng = response["results"][0]["locations"][0]["latLng"]["lng"]
 
     if user_input_lat != 0 and user_input_lng != 0:
         pred_df = pd.DataFrame(
