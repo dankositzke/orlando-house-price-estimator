@@ -94,9 +94,7 @@ column2 = dbc.Col(
                 dcc.Input(id="hoa-fee", type="text"),
                 html.Br(),
                 html.Br(),
-                # html.Button("Click here to see prediction", id="prediction"),
                 html.Button(id="prediction_button", n_clicks=0, children="Prediction"),
-                # html.Div(id="display_prediction"),
             ]
         )
     ],
@@ -121,7 +119,7 @@ column3 = dbc.Col(
 )
 
 
-# Set up items for google maps API call to get latitude and longitude
+# Set up items for API call to get latitude and longitude
 import requests
 
 mapquest_api_key = os.getenv("MAPQUEST_API_KEY")
@@ -132,16 +130,6 @@ def check_address(address):
 
 
 no_clicks = 0
-
-# Determine whether to make the Google maps API call
-# The purpose of this is to only make API calls once the user
-# has input the necessary arguments. Otherwise, the callback function
-# will continually make API calls to Google maps as the user changes the
-# inputs while typing each individual letter or number into the box. This
-# would be a big problem, because the Google maps API quota would get used
-# up extremely fast. Therefore, this function will act as 'gate' to ensure
-# that the API calls only happen once all of the data has been input by
-# the user.
 
 @app.callback(
     Output("prediction-content", "children"),
@@ -177,7 +165,7 @@ def check_user_inputs(
     index = 0
 
     if (
-        clicks > no_clicks
+        clicks > no_clicks # don't make API call for lat/lng until user clicks 'Submit'
         and round(float(lotsize), 0) > 100
         and round(float(sqft), 0) > 500
         and round(float(bathrooms), 0) > 0
