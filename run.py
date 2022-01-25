@@ -39,7 +39,7 @@ footer = dbc.Container(
                     html.Span("Dan Kositzke", className="mr-2"),
                     html.A(
                         html.I(className="fab fa-github-square mr-1"),
-                        href="https://github.com/dankositzke/orlando-fl-housing-sales-predictor",
+                        href="https://github.com/dankositzke/orlando-house-price-estimator",
                     ),
                     html.A(
                         html.I(className="fab fa-linkedin mr-1"),
